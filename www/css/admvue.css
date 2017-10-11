@@ -1,0 +1,107 @@
+html,body {
+      margin: 0;
+      padding: 0;
+}
+body {
+    background-color: #f1f4f5;
+    height:100%;
+    font-family: "Helvetica Neue",Helvetica,Tahoma,Arial,"Microsoft Yahei","Hiragino Sans GB","WenQuanYi Micro Hei",sans-serif;
+    font-size: 14px;
+}
+
+.nav {
+    background-color: #4e97d9;
+    height: 60px;
+}
+
+.nav-header {
+    width:220px;
+    float: left;
+    height: 60px;
+}
+.nav-container {
+    margin-left: 220px;
+}
+.nav-container ul li {
+    float: left;
+    height: 60px;
+    line-height: 60px;
+}
+.nav-container ul li a{
+    padding: 0 20px;
+    color: #ffffff;
+    display: block;
+    height: 60px;
+}
+.nav-container ul li a:hover{
+    background-color: #4688c4;
+}
+.nav-container ul li i {
+    font-size: 16px;
+}
+.nav-container ul li.active a {
+    background-color: #4688c4;
+}
+.nav-left {
+    float: left;
+}
+.nav-right {
+    float: right;
+}
+
+
+/*
+侧边栏
+*/
+.site-menu {
+    width: 220px;
+    position: fixed;
+    top: 60px;
+    z-index: 1030;
+    height: 100%;
+    height: -webkit-calc(100% - 60px);
+    height: calc(100% - 60px);
+    font-family: "Helvetica Neue",Helvetica,Tahoma,Arial,"Microsoft Yahei","Hiragino Sans GB","WenQuanYi Micro Hei",sans-serif;
+    color: rgba(163,175,183,.9);
+    background: #263238;
+
+}
+
+
+.page-tab {
+    margin-left: 220px;
+}
+.ivu-menu-dark {
+    background: #263238;
+}
+.ivu-tabs-bar {
+    border-bottom: 1px solid #e4eaec;
+    background-color: #ffffff;
+    padding-left: 20px;
+}
+.ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-nav-container {
+    height: 40px;
+}
+.ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
+    height: 39px;
+    border: none;
+    border-radius: 0;
+    background-color: #ffffff;
+    padding: 10px 16px 4px;
+    color: #76838f;
+    margin-right: 0;
+}
+.ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab-active {
+    height: 40px;
+    background-color: #f1f4f5;
+    border-left: 1px solid #e4eaec;
+    border-right: 1px solid #e4eaec;
+}
+.ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab .ivu-icon-ios-close-empty {
+    margin-left: 5px;
+    width: 14px;
+    font-weight: bold;
+}
+.ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab .ivu-icon-ios-close-empty:hover{
+    color:#f96868;
+}
