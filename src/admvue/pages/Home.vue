@@ -32,7 +32,7 @@
 
 
     <nav class="site-menu">
-        <Menu theme="dark" width="220px" @on-select="openPage">
+        <Menu theme="dark" width="220px" :active-name="menuActiveName" :open-names="menuOpenName" @on-select="openPage">
             <Submenu :name="i" v-for="(item, i) in menu" :key="i">
                 <template slot="title">
                     <Icon :type="item.icon"></Icon>
@@ -40,17 +40,19 @@
                 </template>
                 <Menu-item :name="i+'-'+j" v-for="(sub,j) in item.sub" :key="j">{{sub.name}}</Menu-item>
             </Submenu>
-
         </Menu>
     </nav>
 
 
     <nav class="page-tab">
-        <Tabs type="card" closable :animated="false" :value="tabCurrent">
-
-            <Tab-pane v-for="(item,index) in pageTab" :key="index" :label="item.name">dd</Tab-pane>
+        <Tabs type="card" closable :animated="false" :value="tabCurrent" @on-click="tabChange">
+            <Tab-pane v-for="(item,index) in pageTab" :key="index" :label="item.name"></Tab-pane>
         </Tabs>
     </nav>
+
+    <main class="adm-page">
+        <router-view></router-view>
+    </main>
 </div>
 </template>
 
@@ -62,8 +64,8 @@
         nav:[
           {icon:'folder', name:'UI示例', menu:[
             {icon:'folder', name:'内容管理',sub:[
-              {name:'文章管理'},
-              {name:'评论管理'},
+              {name:'文章管理',url:'/login'},
+              {name:'评论管理',url:'/login2'},
             ]},
             {icon:'locked', name:'用户管理',sub:[
               {name:'新增用户'},
@@ -74,7 +76,7 @@
 
           {icon:'locked', name:'页面示例', menu:[
             {icon:'folder', name:'内容管理2',sub:[
-              {name:'文章管理2'},
+              {name:'文章管理2',url:'/login3'},
               {name:'评论管理2'},
             ]},
             {icon:'locked', name:'用户管理2',sub:[
@@ -88,6 +90,9 @@
         navCurrent:0,
 
         menu:[],
+        menuOpenName:[],
+        menuActiveName:'',
+
         pageTab:[],
         tabCurrent:0
       }
@@ -96,10 +101,13 @@
 
     },
     methods: {
+      //切换主导航栏
       navChange(index) {
         this.navCurrent = index
         this.menu = this.nav[index].menu
       },
+
+      //点击左边菜单
       openPage(name) {
         let keys = name.split('-')
         let page = this.menu[keys[0]].sub[keys[1]]
@@ -109,9 +117,50 @@
           this.pageTab.push(page)
           this.tabCurrent = this.pageTab.lastIndexOf(page)
         }
+        this.$router.push(page.url);
+      },
+
+      //切换页面标签
+      tabChange(name) {
+        let page = this.pageTab[name]
+        this.$router.push(page.url);
+
+        //切换标签时，nav和menu也跟随变动
+        for(let nav of this.nav) {
+          if(nav.menu)
+            for(let menu of nav.menu) {
+              if(menu.sub) {
+                if(menu.sub.includes(page)) {
+                  this.navCurrent = this.nav.indexOf(nav)
+                  this.menuOpenName = [nav.menu.indexOf(menu)]
+                  this.menuActiveName = nav.menu.indexOf(menu)+'-'+menu.sub.indexOf(page)
+                  break
+                }
+              }
+            }
+        }
+        this.menu = this.nav[this.navCurrent].menu
       }
     },
     beforeMount() {
+      //刷新时，初始化nav，menu和tab
+      let path = location.pathname
+      for(let nav of this.nav) {
+        if(nav.menu)
+          for(let menu of nav.menu) {
+            if(menu.sub)
+            for(let sub of menu.sub) {
+              if(sub.url === path) {
+                this.pageTab.push(sub)
+                this.navCurrent = this.nav.indexOf(nav)
+                this.menuOpenName = [nav.menu.indexOf(menu)]
+                this.menuActiveName = nav.menu.indexOf(menu)+'-'+menu.sub.indexOf(sub)
+                break
+              }
+            }
+          }
+      }
+
       this.menu = this.nav[this.navCurrent].menu
     }
   }
