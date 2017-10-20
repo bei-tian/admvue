@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="main">
     <nav class="nav">
         <div class="nav-header">
 
@@ -58,35 +58,13 @@
 
 
 <script>
+    import { getMenu } from '../api/index'
+
+
   export default {
     data() {
       return {
-        nav:[
-          {icon:'folder', name:'UI示例', menu:[
-            {icon:'folder', name:'内容管理',sub:[
-              {name:'文章管理',url:'/login'},
-              {name:'评论管理',url:'/login2'},
-            ]},
-            {icon:'locked', name:'用户管理',sub:[
-              {name:'新增用户'},
-              {name:'活跃用户'},
-            ]},
-          ]},
-
-
-          {icon:'locked', name:'页面示例', menu:[
-            {icon:'folder', name:'内容管理2',sub:[
-              {name:'文章管理2',url:'/login3'},
-              {name:'评论管理2'},
-            ]},
-            {icon:'locked', name:'用户管理2',sub:[
-              {name:'新增用户2'},
-              {name:'活跃用户'},
-            ]},
-          ]},
-          {icon:'clipboard', name:'表格示例'},
-          {icon:'gear-a', name:'UI示例'},
-        ],
+        nav:[],
         navCurrent:0,
 
         menu:[],
@@ -142,6 +120,14 @@
         this.menu = this.nav[this.navCurrent].menu
       }
     },
+    created() {
+      //读取storage中缓存导航
+      let navCache = window.localStorage.navCache;
+      if(navCache) {
+        this.nav = JSON.parse(navCache)
+      }
+
+    },
     beforeMount() {
       //刷新时，初始化nav，menu和tab
       let path = location.pathname
@@ -160,8 +146,13 @@
             }
           }
       }
-
       this.menu = this.nav[this.navCurrent].menu
+    },
+    mounted() {
+      getMenu( data => {
+        this.nav = data.data
+        this.menu = this.nav[this.navCurrent].menu
+      })
     }
   }
 </script>

@@ -1,14 +1,18 @@
 html,body {
-      margin: 0;
-      padding: 0;
+    margin: 0;
+    padding: 0;
+    height:100%;
 }
 body {
-    background-color: #f1f4f5;
-    height:100%;
     font-family: "Helvetica Neue",Helvetica,Tahoma,Arial,"Microsoft Yahei","Hiragino Sans GB","WenQuanYi Micro Hei",sans-serif;
     font-size: 14px;
 }
-
+i {
+    font-size: 16px;
+}
+.main {
+    height: 100%;
+}
 .nav {
     background-color: #4e97d9;
     height: 60px;
@@ -36,9 +40,7 @@ body {
 .nav-container ul li a:hover{
     background-color: #4688c4;
 }
-.nav-container ul li i {
-    font-size: 16px;
-}
+
 .nav-container ul li.active a {
     background-color: #4688c4;
 }
@@ -78,6 +80,7 @@ body {
     border-bottom: 1px solid #e4eaec;
     background-color: #ffffff;
     padding-left: 20px;
+    margin-bottom: 0;
 }
 .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-nav-container {
     height: 40px;
@@ -109,4 +112,80 @@ body {
 
 .adm-page {
     margin-left: 220px;
+    height: -webkit-calc(100% - 100px);
+    height: calc(100% - 100px);
+}
+
+
+
+
+/*----------菜单管理---------*/
+.menu-set {
+    height:100%;
+}
+.aside {
+    width: 220px;
+    height:100%;
+    border-right:1px solid #e4eaec;
+    padding-top: 20px;
+    float: left;
+}
+.aside-title {
+    padding-bottom: 20px;
+    padding-left: 20px;
+}
+.aside-line {
+    border-bottom:1px solid #e4eaec;
+    margin: 20px;
+}
+.item-actions {
+    float: right;
+    display: none;
+}
+.aside-list li {
+    line-height: 32px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 20px;
+    cursor: pointer;
+
+}
+.aside-list li:hover{
+    background-color: #f3f7f9;
+}
+.aside-list li:hover .item-actions {
+    display: block;
+}
+.aside-list li i {
+    margin-right: 10px;
+}
+
+.content {
+    margin-left: 220px;
+    padding: 20px 100px 0 20px;
+}
+.dd-list .dd-list{
+    margin-left: 30px;
+}
+
+.dd-list .dd-list .dd-item {
+    min-height: 22px;
+    line-height: 22px;
+    padding-left: 30px;
+}
+.dd-content {
+    display: block;
+    height: 34px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 6px 10px 6px 10px;
+    margin: 5px 0;
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid #e4eaec;
+    border-radius: 3px;
+}
+.dd-content:hover{
+    background-color: #f3f7f9;
 }

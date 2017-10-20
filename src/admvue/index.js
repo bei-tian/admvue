@@ -4,10 +4,12 @@ Vue.use(iView);
 
 
 import Login from './pages/Login.vue'
-import Home from './pages/Home.vue'
+import Index from './pages/Index.vue'
+import MenuManage from './pages/menu/MenuManage.vue'
 
 
 export {
-  Login ,
-  Home
+  Login,
+  Index,
+  MenuManage,
 }

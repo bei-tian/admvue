@@ -1,13 +1,13 @@
 <template>
-    <Home></Home>
+    <Index></Index>
 </template>
 
 
 <script>
-    import { Home } from './admvue/index'
+  import { Index } from './admvue/index'
   export default {
     components: {
-      Home
+      Index
     }
   }
 </script>

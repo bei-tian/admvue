@@ -4,15 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --hot --history-api-fallback --content-base www/",
+    "webpack-dev-server": "webpack-dev-server --hot --history-api-fallback --content-base www/",
+    "server": "node src/admvue/server/app.js",
+    "start": "concurrently \"npm run webpack-dev-server\" \"npm run server\"",
     "build": "webpack"
   },
   "author": "bei-tian(https://github.com/bei-tian)",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.16.1",
+    "express": "^4.16.2",
     "iview": "^2.0.0-rc.13",
+    "koa": "^2.3.0",
+    "koa-router": "^7.2.1",
+    "mysql": "^2.15.0",
     "reqwest": "^2.0.5",
+    "sqlite3": "^3.1.13",
     "vue": "^2.3.2",
     "vue-router": "^2.5.3",
     "vuex": "^2.3.1"
