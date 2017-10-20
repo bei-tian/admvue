@@ -16,8 +16,8 @@ module.exports ={
   
   
   async add(ctx) {
-    ctx.response.body = 'add';
-  
+    console.log(ctx.request.body) //post数据
+    ctx.success({data:{}})
     //await 读取数据库
   }
 }

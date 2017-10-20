@@ -1,29 +1,31 @@
-import axios from 'axios';
+import reqwest from 'reqwest';
 
-let api = axios.create({
-  baseURL: 'http://localhost:3000/',
-  timeout: 1000
-});
 
-let get = (url, params, callback) => {
-  api.get(url, { params })
-    .then(response => {
-      callback(response.data)
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+
+const baseUrl = 'http://localhost:3000';
+function ajax(url,param,callback,type){
+  reqwest({
+    url: url ,
+    method: type,
+    crossOrigin: true,
+    data: param,
+    success: function(ret){
+      if(ret.code === 200){
+        callback(ret.data);
+      } else {
+        alert('error:'+ ret.msg);
+      }
+    }
+  });
 }
 
-let post = (url, params, callback) => {
-  api.post(url, { params })
-    .then(response => {
-      callback(response.data)
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+function get(url,param,callback) {
+  ajax(baseUrl + url,param,callback,'GET');
 }
+function post(url,param,callback) {
+  ajax(baseUrl + url,param,callback,'POST');
+}
+
 
 //export const getMenu = (params,callback) => { get('/menu/index',params,callback) }
 export const getMenu = callback => { get('/menu/index',{},callback) }

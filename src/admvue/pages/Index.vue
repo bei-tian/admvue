@@ -32,7 +32,7 @@
 
 
     <nav class="site-menu">
-        <Menu theme="dark" width="220px" :active-name="menuActiveName" :open-names="menuOpenName" @on-select="openPage">
+        <Menu  ref="menu" theme="dark" width="220px" :active-name="menuActiveName" :open-names="menuOpenName" @on-select="openPage">
             <Submenu :name="i" v-for="(item, i) in menu" :key="i">
                 <template slot="title">
                     <Icon :type="item.icon"></Icon>
@@ -118,41 +118,40 @@
             }
         }
         this.menu = this.nav[this.navCurrent].menu
-      }
-    },
-    created() {
-      //读取storage中缓存导航
-      let navCache = window.localStorage.navCache;
-      if(navCache) {
-        this.nav = JSON.parse(navCache)
-      }
+      },
 
-    },
-    beforeMount() {
-      //刷新时，初始化nav，menu和tab
-      let path = location.pathname
-      for(let nav of this.nav) {
-        if(nav.menu)
-          for(let menu of nav.menu) {
-            if(menu.sub)
-            for(let sub of menu.sub) {
-              if(sub.url === path) {
-                this.pageTab.push(sub)
-                this.navCurrent = this.nav.indexOf(nav)
-                this.menuOpenName = [nav.menu.indexOf(menu)]
-                this.menuActiveName = nav.menu.indexOf(menu)+'-'+menu.sub.indexOf(sub)
-                break
-              }
+      initTab() {
+        //刷新时，初始化nav，menu和tab
+        let path = location.pathname
+        for(let nav of this.nav) {
+          if(nav.menu)
+            for(let menu of nav.menu) {
+              if(menu.sub)
+                for(let sub of menu.sub) {
+                  if(sub.url === path.trim()) {
+                    this.pageTab.push(sub)
+                    this.navCurrent = this.nav.indexOf(nav)
+                    this.menuOpenName = [nav.menu.indexOf(menu)]
+                    this.menuActiveName = nav.menu.indexOf(menu)+'-'+menu.sub.indexOf(sub)
+                    break
+                  }
+                }
             }
-          }
+        }
+        this.menu = this.nav[this.navCurrent].menu
       }
-      this.menu = this.nav[this.navCurrent].menu
     },
     mounted() {
       getMenu( data => {
-        this.nav = data.data
-        this.menu = this.nav[this.navCurrent].menu
+        this.nav = data
+        this.initTab()
       })
-    }
+    },
+    updated () {
+      this.$nextTick(() => {
+        this.$refs.menu.updateOpened();
+        this.$refs.menu.updateActiveName();
+      });
+    },
   }
 </script>

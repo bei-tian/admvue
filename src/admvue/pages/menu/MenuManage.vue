@@ -83,7 +83,7 @@
       },
       mounted() {
         getMenu( data => {
-          this.nav = data.data
+          this.nav = data
           this.navCurrent = this.nav[0]
         })
       },
