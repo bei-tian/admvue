@@ -12,7 +12,14 @@ module.exports = async (ctx, next) => {
   //接口成功输出
   ctx.success = ({ msg , data}) => {
     ctx.response.type = 'json';
-    ctx.body = { code: 200, msg, data };
+    ctx.body = { code: 200, msg, data:data };
   }
-  await next()
+  try {
+    await next()
+  } catch (err) {
+    ctx.response.status = err.statusCode || err.status || 500;
+    ctx.response.body = {
+      message: err.message
+    }
+  }
 }

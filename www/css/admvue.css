@@ -150,6 +150,10 @@ i {
     cursor: pointer;
 
 }
+.aside-list li.active{
+    background-color: #f3f7f9;
+    color: #62a8ea;
+}
 .aside-list li:hover{
     background-color: #f3f7f9;
 }
@@ -188,4 +192,7 @@ i {
 }
 .dd-content:hover{
     background-color: #f3f7f9;
+}
+.dd-content:hover .item-actions {
+    display: block;
 }

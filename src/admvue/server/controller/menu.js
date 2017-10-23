@@ -1,6 +1,6 @@
 module.exports ={
   async index(ctx) {
-    let list = await query('SELECT id,icon,name,parent_id,url from menu');
+    let list = await db.query('SELECT id,icon,name,parent_id,url from '+ db.prefix +'menu');
     let nav = getSub(list, 0)
     
     for(let i in nav) {
@@ -15,10 +15,20 @@ module.exports ={
   },
   
   
-  async add(ctx) {
-    console.log(ctx.request.body) //post数据
-    ctx.success({data:{}})
-    //await 读取数据库
+  async edit(ctx) {
+    let post = ctx.request.body
+    if(post.id) {
+      await db.save('menu', post, 'id='+ parseInt(post.id))
+    } else {
+      await db.add('menu', post)
+    }
+    ctx.success({data:post})
+  },
+  
+  async del(ctx) {
+    let post = ctx.request.body
+    await db.delete('menu', 'id='+ parseInt(post.id))
+    ctx.success({data:post})
   }
 }
 

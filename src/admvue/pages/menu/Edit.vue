@@ -1,11 +1,12 @@
 <template>
     <Form ref="formCustom"  :label-width="80">
         <FormItem label="图标&名称：">
-            <Input v-model="name">
+            <Input v-model="initData.name">
             <Poptip slot="prepend" placement="bottom" ref="poptip">
-                <div style="cursor: pointer;"><Icon :type="icon"></Icon></div>
+                <div class="menu-icon"><Icon :type="icon"></Icon></div>
 
                 <div slot="content" ref="icons">
+                    <Icon type="null"></Icon>
                     <Icon type="arrow-up-a"></Icon>
                     <Icon type="plus-circled"></Icon>
                     <Icon type="ionic"></Icon>
@@ -89,22 +90,38 @@
     </Form>
 </template>
 <script>
-  import { addMenu } from '../../api/index'
+  import { editMenu } from '../../api/index'
   export default {
+    props:['editData'],
     data() {
       return {
-        icon:'navicon-round',
-        name:''
+        icon:this.editData.icon
+      }
+    },
+    computed: {
+      initData: function() {
+        return {
+          id: this.editData.id,
+          parent_id: this.editData.parent_id,
+          icon: this.icon,
+          name: this.editData.name,
+        }
       }
     },
     methods: {
       handleSubmit() {
-        addMenu({name:123},data => {
-
+        editMenu(this.initData,data => {
+          this.$parent.$parent.getMenu()
         })
       }
     },
+    watch: {
+      editData: function (newVal) {
+        this.icon = newVal.icon
+      }
+    },
     mounted() {
+      //添加图标点击事件
       let icons = this.$refs.icons.childNodes;
       for (let i=0;i<icons.length;i++){
         if (icons[i].tagName === 'I') {
@@ -136,6 +153,7 @@
         padding: 8px;
         margin: 4px;
         width: 30px;
+        height: 30px;
         font-size: 14px;
         color: inherit;
         text-align: center;
@@ -143,5 +161,9 @@
         border-radius: 2px;
         -webkit-box-shadow: 0 0 0 1px #e4eaec;
         box-shadow: 0 0 0 1px #e4eaec;
+    }
+    .menu-icon {
+        cursor: pointer;
+        width: 20px;
     }
 </style>

@@ -6,7 +6,7 @@
         </div>
         <div class="nav-container">
             <ul class="nav-left">
-                <li :class="{active:(navCurrent === index)}" v-for="(item,index) in nav" @click="navChange(index)">
+                <li :class="{active:(navCurrentIndex === index)}" v-for="(item,index) in nav" @click="navChange(index)">
                     <a href="#">
                         <Icon :type="item.icon"></Icon>
                         <span>{{item.name}}</span>
@@ -65,7 +65,7 @@
     data() {
       return {
         nav:[],
-        navCurrent:0,
+        navCurrentIndex:0,
 
         menu:[],
         menuOpenName:[],
@@ -81,7 +81,7 @@
     methods: {
       //切换主导航栏
       navChange(index) {
-        this.navCurrent = index
+        this.navCurrentIndex = index
         this.menu = this.nav[index].menu
       },
 
@@ -109,7 +109,7 @@
             for(let menu of nav.menu) {
               if(menu.sub) {
                 if(menu.sub.includes(page)) {
-                  this.navCurrent = this.nav.indexOf(nav)
+                  this.navCurrentIndex = this.nav.indexOf(nav)
                   this.menuOpenName = [nav.menu.indexOf(menu)]
                   this.menuActiveName = nav.menu.indexOf(menu)+'-'+menu.sub.indexOf(page)
                   break
@@ -117,7 +117,7 @@
               }
             }
         }
-        this.menu = this.nav[this.navCurrent].menu
+        this.menu = this.nav[this.navCurrentIndex].menu
       },
 
       initTab() {
@@ -130,7 +130,7 @@
                 for(let sub of menu.sub) {
                   if(sub.url === path.trim()) {
                     this.pageTab.push(sub)
-                    this.navCurrent = this.nav.indexOf(nav)
+                    this.navCurrentIndex = this.nav.indexOf(nav)
                     this.menuOpenName = [nav.menu.indexOf(menu)]
                     this.menuActiveName = nav.menu.indexOf(menu)+'-'+menu.sub.indexOf(sub)
                     break
@@ -138,7 +138,7 @@
                 }
             }
         }
-        this.menu = this.nav[this.navCurrent].menu
+        this.menu = this.nav[this.navCurrentIndex].menu
       }
     },
     mounted() {

@@ -29,4 +29,5 @@ function post(url,param,callback) {
 
 //export const getMenu = (params,callback) => { get('/menu/index',params,callback) }
 export const getMenu = callback => { get('/menu/index',{},callback) }
-export const addMenu = (params,callback) => { post('/menu/add',params,callback) }
+export const editMenu = (params,callback) => { post('/menu/edit',params,callback) }
+export const delMenu = (params,callback) => { post('/menu/del',params,callback) }

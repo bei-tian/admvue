@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "webpack-dev-server": "webpack-dev-server --hot --history-api-fallback --content-base www/",
+    "dev": "webpack-dev-server --hot --history-api-fallback --content-base www/",
     "server": "node src/admvue/server/app.js",
-    "start": "concurrently \"npm run webpack-dev-server\" \"npm run server\"",
+    "start": "concurrently \"npm run dev\" \"npm run server\"",
     "build": "webpack"
   },
   "author": "bei-tian(https://github.com/bei-tian)",
@@ -23,6 +23,7 @@
     "sqlite3": "^3.1.13",
     "vue": "^2.3.2",
     "vue-router": "^2.5.3",
+    "vuedraggable": "^2.14.1",
     "vuex": "^2.3.1"
   },
   "devDependencies": {

@@ -4,6 +4,7 @@ module.exports = {
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'admvue'
+    database: 'admvue',
+    prefix:'adm_'
   }
 }
