@@ -8,6 +8,9 @@ require('./lib/db')
 const response = require('./middlewares/response')
 app.use(response)
 
+const logined = require('./middlewares/logined')
+app.use(logined)
+
 const router = require('./router')
 app.use(router.routes())
 

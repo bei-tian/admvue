@@ -1,29 +1,31 @@
 <template>
     <div class="login-bd"><div class="login-logo">  </div>
         <h3>管理后台登陆</h3>
-        <Form ref="formInline" :model="formInline" :rules="ruleInline">
+        <Form ref="form" :model="form" :rules="rule">
             <Form-item prop="username">
-                <Input type="text" v-model="formInline.username" placeholder="请输入帐号"/>
+                <Input type="text" v-model="form.username" placeholder="请输入帐号"/>
             </Form-item>
             <Form-item prop="password">
-                <Input type="password" v-model="formInline.password" placeholder="请输入密码" />
+                <Input type="password" v-model="form.password" placeholder="请输入密码" />
             </Form-item>
             <Form-item>
-                <Button type="primary" @click="handleSubmit('formInline')" long>登录</Button>
+                <Button type="primary" @click="handleSubmit('form')" long>登录</Button>
             </Form-item>
         </Form>
     </div>
 
 </template>
 <script>
+    import Cookie from '../utils/Cookie'
+    import { adminLogin } from '../api/index'
     export default {
         data () {
             return {
-                formInline: {
+                form: {
                     username: '',
                     password: ''
                 },
-                ruleInline: {
+                rule: {
                     username: [
                         { required: true, message: '请填写用户名', trigger: 'blur' }
                     ],
@@ -36,7 +38,17 @@
         },
         methods: {
             handleSubmit(name) {
-
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        adminLogin(this.form, data=> {
+                            Cookie.set('adm_login_id',data.id)
+                            Cookie.set('token',data.token)
+                            this.$root.$children[0].isLogin = true
+                        })
+                    } else {
+                        this.$Message.error('表单验证失败!')
+                    }
+                })
             }
         }
     }

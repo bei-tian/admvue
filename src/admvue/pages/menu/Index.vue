@@ -1,16 +1,16 @@
 <template>
-    <div class="menu-set">
+    <div class="menu-index">
         <div class="aside">
             <div class="aside-title">顶部菜单</div>
             <div class="aside-section">
                 <ul class="aside-list">
-                    <draggable v-model="nav">
+                    <draggable v-model="nav" @end="saveSort(nav)">
                     <li :class="{active:(navCurrentIndex === index)}" v-for="(item,index) in nav" @click="navChange(index)">
                         <Icon :type="item.icon"></Icon>
                         <span>{{item.name}}</span>
                         <span class="item-actions">
-                            <span @click="editMenu(item, $event)"><Icon type="compose"></Icon></span>
-                            <span @click="delMenu(item.id, $event)"><Icon type="close"></Icon> </span>
+                            <span @click="editMenu(item, $event)" title="编辑"><Icon type="compose"></Icon></span>
+                            <span @click="delMenu(item.id, $event)" title="删除"><Icon type="close"></Icon> </span>
                         </span>
                     </li>
                     </draggable>
@@ -25,15 +25,7 @@
         </div>
 
 
-        <Modal
-                v-model="modalShow"
-                title="添加新菜单"
-                okText="提交"
-                :footer-hide="true"
-                >
-            <Edit :editData="editData"></Edit>
 
-        </Modal>
 
 
 
@@ -50,23 +42,24 @@
                         </span>
                     </div>
                     <ol class="dd-list">
+                        <draggable v-model="navCurrent.menu" @end="saveSort(navCurrent.menu)">
                         <li class="dd-item" v-for="(menu, i) in navCurrent.menu">
                             <div class="dd-content">
                                 <span class="menu-name"><Icon :type="menu.icon"></Icon>&nbsp;  {{menu.name}}</span>
                                 <span class="item-actions">
-                                    <span @click="addMenu(menu.id)"><Icon type="plus"></Icon></span>
-                                    <span @click="editMenu(menu, $event)"><Icon type="compose"></Icon></span>
-                                    <span @click="delMenu(menu.id, $event)"><Icon type="close"></Icon> </span>
+                                    <span @click="addMenu(menu.id)" title="添加子菜单"><Icon type="plus"></Icon></span>
+                                    <span @click="editMenu(menu, $event)" title="编辑"><Icon type="compose"></Icon></span>
+                                    <span @click="delMenu(menu.id, $event)" title="删除"><Icon type="close"></Icon> </span>
                                 </span>
                             </div>
                             <ol class="dd-list">
-                                <draggable v-model="menu.sub">
+                                <draggable v-model="menu.sub" @end="saveSort(menu.sub)">
                                 <li class="dd-item" v-for="(sub, j) in menu.sub">
                                     <div class="dd-content">
                                         <span class="menu-name"><Icon :type="sub.icon"></Icon>&nbsp; {{sub.name}}</span>
                                         <span class="item-actions">
-                                            <span @click="editMenu(sub, $event)"><Icon type="compose"></Icon></span>
-                                            <span @click="delMenu(sub.id, $event)"><Icon type="close"></Icon> </span>
+                                            <span @click="editMenu(sub, $event)" title="编辑"><Icon type="compose"></Icon></span>
+                                            <span @click="delMenu(sub.id, $event)" title="删除"><Icon type="close"></Icon> </span>
                                         </span>
                                     </div>
                                 </li>
@@ -74,15 +67,20 @@
 
                             </ol>
                         </li>
+                        </draggable>
                     </ol>
                 </li>
             </ol>
         </div>
+
+        <Modal title="添加新菜单" :footer-hide="true" v-model="modalShow">
+            <Edit :editData="editData"></Edit>
+        </Modal>
     </div>
 
 </template>
 <script>
-    import { getMenu,delMenu } from '../../api/index'
+    import { menuIndex,menuDel,menuSort } from '../../api/index'
     import draggable from 'vuedraggable'
     import Edit from './Edit.vue'
     export default {
@@ -122,17 +120,29 @@
           if(!confirm('确定要删除该菜单吗？')) {
             return false
           }
-          delMenu({id:id}, data => {
+          menuDel({id:id}, data => {
             this.getMenu()
           })
           e.stopPropagation()
         },
 
         getMenu() {
-          getMenu( data => {
+          menuIndex( data => {
             this.nav = data
             this.navCurrent = this.nav[this.navCurrentIndex]
             this.modalShow = false
+          })
+        },
+
+
+        //保存拖动排序
+        saveSort(data) {
+          let sort = []
+          data.map(function (item, index) {
+            sort.push({id:item.id, sort:index})
+          })
+          menuSort({sort},data=> {
+
           })
         }
       },

@@ -10,6 +10,24 @@ body {
 i {
     font-size: 16px;
 }
+
+
+.login-bd {
+    width: 300px;
+    margin: 0 auto;
+    padding-top: 150px;
+}
+.login-bd h3 {
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-logo {
+    font-size: 100px;
+}
+
+
 .main {
     height: 100%;
 }
@@ -114,14 +132,17 @@ i {
     margin-left: 220px;
     height: -webkit-calc(100% - 100px);
     height: calc(100% - 100px);
+    background: #f1f4f5;
+    padding-top: 1px;
 }
 
 
 
 
 /*----------菜单管理---------*/
-.menu-set {
+.menu-index {
     height:100%;
+    background: #ffffff;
 }
 .aside {
     width: 220px;
@@ -147,8 +168,6 @@ i {
     padding-top: 6px;
     padding-bottom: 6px;
     padding-left: 20px;
-    cursor: pointer;
-
 }
 .aside-list li.active{
     background-color: #f3f7f9;
@@ -160,8 +179,9 @@ i {
 .aside-list li:hover .item-actions {
     display: block;
 }
-.aside-list li i {
+.aside-list li i, .dd-content i {
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .content {
@@ -195,4 +215,14 @@ i {
 }
 .dd-content:hover .item-actions {
     display: block;
+}
+
+
+/*----------分页样式---------*/
+.page-wrap {
+    padding: 15px;
+    background: #fff;
+}
+.page-wrap .ivu-page{
+    float: right;
 }

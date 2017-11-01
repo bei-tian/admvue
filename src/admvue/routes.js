@@ -1,14 +1,18 @@
 import
 {
-  Login,
-  Index,
-  MenuManage,
+    Login,
+    Index,
+    AdmMenu,
+    AdmAdmin,
+    AdmAdminRole
 }
-from './index'
+    from './index'
 
 
 export default [
-  { path: '/login', component: Login },
-  { path: '/home', component: Index },
-  { path: '/menu', component: MenuManage },
+    {path: '/login', component: Login},
+    {path: '/home', component: Index},
+    {path: '/adm/menu', component: AdmMenu},
+    {path: '/adm/admin', component: AdmAdmin},
+    {path: '/adm/admin-role', component: AdmAdminRole},
 ]

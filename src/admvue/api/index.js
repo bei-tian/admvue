@@ -1,33 +1,56 @@
-import reqwest from 'reqwest';
-
-
-
-const baseUrl = 'http://localhost:3000';
-function ajax(url,param,callback,type){
-  reqwest({
-    url: url ,
-    method: type,
-    crossOrigin: true,
-    data: param,
-    success: function(ret){
-      if(ret.code === 200){
-        callback(ret.data);
-      } else {
-        alert('error:'+ ret.msg);
-      }
-    }
-  });
-}
-
-function get(url,param,callback) {
-  ajax(baseUrl + url,param,callback,'GET');
-}
-function post(url,param,callback) {
-  ajax(baseUrl + url,param,callback,'POST');
-}
+import {get,post} from '../utils/ajax'
 
 
 //export const getMenu = (params,callback) => { get('/menu/index',params,callback) }
-export const getMenu = callback => { get('/menu/index',{},callback) }
-export const editMenu = (params,callback) => { post('/menu/edit',params,callback) }
-export const delMenu = (params,callback) => { post('/menu/del',params,callback) }
+export const menuIndex = callback => {
+    get('/menu/index', {}, callback)
+}
+export const menuTree = (params, callback) => {
+    get('/menu/tree', params, callback)
+}
+export const menuSave = (params, callback) => {
+    post('/menu/save', params, callback)
+}
+export const menuDel = (params, callback) => {
+    post('/menu/del', params, callback)
+}
+export const menuSort = (params, callback) => {
+    post('/menu/sort', params, callback)
+}
+
+
+export const adminLogin = (params, callback) => {
+    post('/admin/login', params, callback)
+}
+export const adminIndex = (params, callback) => {
+    get('/admin/index', params, callback)
+}
+export const adminInfo = (params, callback) => {
+    get('/admin/info', params, callback)
+}
+export const adminSave = (params, callback) => {
+    post('/admin/save', params, callback)
+}
+export const adminDel = (params, callback) => {
+    post('/admin/del', params, callback)
+}
+
+export const adminRoleIndex = (params, callback) => {
+    get('/admin-role/index', params, callback)
+}
+export const adminRoleInfo = (params, callback) => {
+    get('/admin-role/info', params, callback)
+}
+export const adminRoleSave = (params, callback) => {
+    post('/admin-role/save', params, callback)
+}
+export const adminRoleDel = (params, callback) => {
+    post('/admin-role/del', params, callback)
+}
+export const adminRolePrivilegeSave = (params, callback) => {
+    post('/admin-role/privilegeSave', params, callback)
+}
+export const adminRolePrivilege = (params, callback) => {
+    get('/admin-role/privilege', params, callback)
+}
+
