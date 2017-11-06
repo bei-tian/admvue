@@ -21,7 +21,7 @@ export function ajax(url, param, callback, type) {
             if (ret.code === 200) {
                 callback(ret.data);
             } else {
-                if(ret.msg === '登陆超时，请重新登陆') {
+                if(ret.msg === 'token无效') {
                     Cookie.delete('adm_login_id')
                     location.reload()
                 } else {

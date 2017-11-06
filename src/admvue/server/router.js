@@ -6,6 +6,7 @@ const adminRole = require('./controller/admin-role')
 router
     .post('/admin/login', admin.login)
     .get('/admin/index', admin.index)
+    .get('/admin/my', admin.my)
     .get('/admin/info', admin.info)
     .post('/admin/save', admin.save)
     .post('/admin/del', admin.del)
@@ -19,6 +20,7 @@ router
     .get('/admin-role/privilege', adminRole.privilege)
     
     .get('/menu/index', menu.index)
+    .get('/menu/my', menu.my)
     .post('/menu/save', menu.save)
     .post('/menu/del', menu.del)
     .post('/menu/sort', menu.sort)

@@ -5,12 +5,13 @@ module.exports = async (ctx, next) => {
     if(login_id > 0) {
         let info = await db.query('SELECT * from ' + db.prefix + 'admin where id = ?',[login_id])
         let admin = info[0]
-        let D = new Date()
-        let time = D.toLocaleString().substring(0,13)
-        let token = md5(admin.id + admin.username + admin.password + time)
+        
+        let token = md5(admin.id + admin.username + admin.password + admin.login_time.toLocaleString())
         if(token !== ctx.query.token) {
-            ctx.error({msg:'登陆超时，请重新登陆'})
+            ctx.error({msg:'token无效'})
         } else {
+            global.login_id = login_id
+            global.role_id = admin.role_id
             await next()
         }
     } else if(ctx.url === '/admin/login') {

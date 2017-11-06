@@ -56,8 +56,9 @@ module.exports = {
         let id = parseInt(ctx.query.id)
         let info = await db.query('SELECT privilege from ' + db.prefix + 'admin_role where id=' + id);
         let privilege = []
-        if(info[0].privilege) {
-            privilege = info[0].privilege.split(',')
+        if(info[0]) {
+            if(info[0].privilege)
+                privilege = info[0].privilege.split(',')
         }
         let list = await db.query('SELECT id,name as title,parent_id from '+ db.prefix +'menu order by sort asc,id asc');
         for(let i in list) {

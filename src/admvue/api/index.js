@@ -2,11 +2,11 @@ import {get,post} from '../utils/ajax'
 
 
 //export const getMenu = (params,callback) => { get('/menu/index',params,callback) }
-export const menuIndex = callback => {
-    get('/menu/index', {}, callback)
+export const menuMy = callback => {
+    get('/menu/my', {}, callback)
 }
-export const menuTree = (params, callback) => {
-    get('/menu/tree', params, callback)
+export const menuIndex = (callback) => {
+    get('/menu/index', {}, callback)
 }
 export const menuSave = (params, callback) => {
     post('/menu/save', params, callback)
@@ -24,6 +24,9 @@ export const adminLogin = (params, callback) => {
 }
 export const adminIndex = (params, callback) => {
     get('/admin/index', params, callback)
+}
+export const adminMy = (callback) => {
+    get('/admin/my', {}, callback)
 }
 export const adminInfo = (params, callback) => {
     get('/admin/info', params, callback)

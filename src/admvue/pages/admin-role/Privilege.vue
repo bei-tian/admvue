@@ -1,6 +1,6 @@
 <template>
     <span>
-        <Tree :data="data" show-checkbox @on-check-change="handleCheck"></Tree>
+        <Tree :data="data" :show-checkbox="true" v-model="data" ref="tree"></Tree>
         <Button type="info" @click="save">保存</Button>
     </span>
 </template>
@@ -11,19 +11,16 @@
         data () {
             return {
                 data: [],
-                privilege:''
             }
         },
         methods: {
-            handleCheck(checked) {
+            save() {
+                let checked = this.$refs['tree'].getCheckedNodes()
                 let privilege = []
                 checked.map(function (item) {
                     privilege.push(item.id)
                 })
-                this.privilege = privilege.join(',')
-            },
-            save() {
-                adminRolePrivilegeSave({id:this.id, privilege:this.privilege},data => {
+                adminRolePrivilegeSave({id:this.id, privilege:privilege.join(',')},data => {
                     this.$Message.success('保存成功!')
                     this.$parent.$parent.getList()
                 })
@@ -34,9 +31,7 @@
                 })
             }
         },
-        mounted() {
-            //this.getPrivilege(this.id)
-        },
+
         watch:{
             id:function (newId) {
                 this.getPrivilege(newId)

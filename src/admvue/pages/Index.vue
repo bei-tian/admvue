@@ -16,11 +16,25 @@
                 </ul>
 
                 <ul class="nav-right">
-                    <li @click="logout">
+                    <li  class="user-notice">
                         <a href="javascript:">
-                            <Icon type="log-out"></Icon>
+                            <Badge dot>
+                            <Icon type="ios-bell"></Icon>
+                            </Badge>
                         </a>
                     </li>
+                    <li @click="logout" class="user-info">
+                        <Dropdown>
+                            <a href="javascript:void(0)">
+                                <img src="/images/user2-160x160.jpg" class="user-image" /> <span>admin</span>
+                            </a>
+                            <DropdownMenu slot="list" class="user-set">
+                                <DropdownItem>修改密码</DropdownItem>
+                                <DropdownItem>退出</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </li>
+
                 </ul>
             </div>
         </nav>
@@ -52,9 +66,13 @@
     </div>
 </template>
 
+<style>
+
+
+</style>
 
 <script>
-    import { menuIndex } from '../api/index'
+    import { menuMy } from '../api/index'
     import Cookie from '../utils/Cookie'
 
     export default {
@@ -67,7 +85,10 @@
                 menuOpenName: [],
                 menuActiveName: '',
 
-                pageTab: [],
+                pageTab: [{
+                    name:'首页',
+                    url:'/'
+                }],
                 tabCurrent: 0
             }
         },
@@ -126,7 +147,7 @@
             }
         },
         mounted() {
-            menuIndex(data => {
+            menuMy(data => {
                 this.nav = data
                 this.initTab()
             })
@@ -139,11 +160,3 @@
         },
     }
 </script>
-
-<style>
-    .logo {
-        height:35px;
-        margin-top: 15px;
-        margin-left: 30px;
-    }
-</style>

@@ -8,7 +8,7 @@ require('./lib/db')
 const response = require('./middlewares/response')
 app.use(response)
 
-const logined = require('./middlewares/logined')
+const logined = require('./middlewares/check-login')
 app.use(logined)
 
 const router = require('./router')

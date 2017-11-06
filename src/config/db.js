@@ -1,5 +1,5 @@
 module.exports = {
-    type: 'sqlite',
+    type: 'mysql',
     mysql: {
         host: 'localhost',
         user: 'root',
