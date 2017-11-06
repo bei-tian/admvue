@@ -6,10 +6,10 @@
 </template>
 <script>
     export default {
-        props:['total'],
+        props: ['total'],
         methods: {
             handleChange(page) {
-                this.$emit('on-change',page)
+                this.$emit('on-change', page)
             }
         }
     }

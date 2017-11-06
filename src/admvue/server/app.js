@@ -1,7 +1,7 @@
-const Koa = require('koa');
-const app = new Koa();
-const koaBody = require('koa-body');
-app.use(koaBody());
+const Koa = require('koa')
+const app = new Koa()
+const koaBody = require('koa-body')
+app.use(koaBody())
 
 require('./lib/db')
 
@@ -14,4 +14,4 @@ app.use(logined)
 const router = require('./router')
 app.use(router.routes())
 
-app.listen(3000);
+app.listen(3000)

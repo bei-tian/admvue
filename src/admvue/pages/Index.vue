@@ -2,7 +2,7 @@
     <div class="main">
         <nav class="nav">
             <div class="nav-header">
-                <img src="/images/logo.png" class="logo" />
+                <img src="/images/logo.png" class="logo"/>
             </div>
             <div class="nav-container">
                 <ul class="nav-left">
@@ -16,21 +16,26 @@
                 </ul>
 
                 <ul class="nav-right">
-                    <li  class="user-notice">
+                    <li class="user-notice">
                         <a href="javascript:">
                             <Badge dot>
-                            <Icon type="ios-bell"></Icon>
+                                <Icon type="ios-bell"></Icon>
                             </Badge>
                         </a>
                     </li>
-                    <li @click="logout" class="user-info">
-                        <Dropdown>
+                    <li class="user-info">
+                        <Dropdown trigger="click">
                             <a href="javascript:void(0)">
-                                <img src="/images/user2-160x160.jpg" class="user-image" /> <span>admin</span>
+                                <img src="/images/user2-160x160.jpg" class="user-image"/> <span>admin</span>
+                                <Icon type="arrow-down-b"></Icon>
                             </a>
                             <DropdownMenu slot="list" class="user-set">
-                                <DropdownItem>修改密码</DropdownItem>
-                                <DropdownItem>退出</DropdownItem>
+                                <DropdownItem>
+                                    <div @click="setPassword">修改密码</div>
+                                </DropdownItem>
+                                <DropdownItem>
+                                    <div @click="logout">退出</div>
+                                </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </li>
@@ -61,8 +66,14 @@
         </nav>
 
         <main class="adm-page">
-            <router-view></router-view>
+            <keep-alive>
+                <router-view></router-view>
+            </keep-alive>
         </main>
+
+        <Modal title="修改密码" :footer-hide="true" v-model="modalShow">
+            <SetPassword></SetPassword>
+        </Modal>
     </div>
 </template>
 
@@ -72,8 +83,9 @@
 </style>
 
 <script>
-    import { menuMy } from '../api/index'
-    import Cookie from '../utils/Cookie'
+    import SetPassword from './home/SetPassword.vue'
+    import {menuMy} from '../api/index'
+    import Cookies from 'js-cookie'
 
     export default {
         data() {
@@ -86,17 +98,21 @@
                 menuActiveName: '',
 
                 pageTab: [{
-                    name:'首页',
-                    url:'/'
+                    name: '首页',
+                    url: '/'
                 }],
-                tabCurrent: 0
+                tabCurrent: 0,
+                modalShow: false
             }
         },
         computed: {},
         methods: {
+            setPassword() {
+                this.modalShow = true
+            },
             //退出
             logout() {
-                Cookie.delete('adm_login_id')
+                Cookies.remove('adm_login_id')
                 this.$root.$children[0].isLogin = false
             },
             //切换主导航栏
@@ -158,5 +174,8 @@
                 this.$refs.menu.updateActiveName();
             });
         },
+        components: {
+            SetPassword
+        }
     }
 </script>

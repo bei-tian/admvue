@@ -15,13 +15,13 @@
     </span>
 </template>
 <script>
-    import { adminMy } from '../../api/index'
+    import {adminMy} from '../../api/index'
     import SetPassword from './SetPassword.vue'
     export default {
         data() {
             return {
-                modalShow:false,
-                info:{}
+                modalShow: false,
+                info: {}
             }
         },
         methods: {
@@ -30,7 +30,7 @@
             }
         },
         mounted() {
-            adminMy( data => {
+            adminMy(data => {
                 this.info = data.info
             })
         },

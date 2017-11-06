@@ -5,9 +5,9 @@
     </span>
 </template>
 <script>
-    import { adminRolePrivilegeSave, adminRolePrivilege } from '../../api/index'
+    import {adminRolePrivilegeSave, adminRolePrivilege} from '../../api/index'
     export default {
-        props:['id'],
+        props: ['id'],
         data () {
             return {
                 data: [],
@@ -20,20 +20,20 @@
                 checked.map(function (item) {
                     privilege.push(item.id)
                 })
-                adminRolePrivilegeSave({id:this.id, privilege:privilege.join(',')},data => {
+                adminRolePrivilegeSave({id: this.id, privilege: privilege.join(',')}, data => {
                     this.$Message.success('保存成功!')
                     this.$parent.$parent.getList()
                 })
             },
             getPrivilege(id) {
-                adminRolePrivilege({id},data => {
+                adminRolePrivilege({id}, data => {
                     this.data = data
                 })
             }
         },
 
-        watch:{
-            id:function (newId) {
+        watch: {
+            id: function (newId) {
                 this.getPrivilege(newId)
             }
         }

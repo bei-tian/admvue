@@ -34,9 +34,14 @@ export const adminInfo = (params, callback) => {
 export const adminSave = (params, callback) => {
     post('/admin/save', params, callback)
 }
+export const adminSetPwd = (params, callback) => {
+    post('/admin/set-pwd', params, callback)
+}
 export const adminDel = (params, callback) => {
     post('/admin/del', params, callback)
 }
+
+
 
 export const adminRoleIndex = (params, callback) => {
     get('/admin-role/index', params, callback)

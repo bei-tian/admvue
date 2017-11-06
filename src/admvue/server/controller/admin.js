@@ -18,15 +18,15 @@ module.exports = {
         }
         if (username) {
             sql = sql + ' AND username like ? '
-            values.push('%'+username+'%')
+            values.push('%' + username + '%')
         }
         
         
-        let total = await db.query(sql.replace('a.id,a.username,a.create_time,b.name as role','count(*) as num'), values);
+        let total = await db.query(sql.replace('a.id,a.username,a.create_time,b.name as role', 'count(*) as num'), values);
         total = total[0].num
         
         sql = sql + 'order by a.id asc '
-        sql = sql + 'limit '+ ((page-1)*10) +', 10'
+        sql = sql + 'limit ' + ((page - 1) * 10) + ', 10'
         let list = await db.query(sql, values);
         
         let role = await db.query('SELECT * from ' + db.prefix + 'admin_role')
@@ -36,13 +36,13 @@ module.exports = {
         let id = parseInt(ctx.query.id)
         let info = await db.query('SELECT id,username,role_id from ' + db.prefix + 'admin where id=' + id);
         let role = await db.query('SELECT * from ' + db.prefix + 'admin_role')
-        ctx.success({data: {info:info[0],roleList:role}})
+        ctx.success({data: {info: info[0], roleList: role}})
     },
     
     async save(ctx) {
         let post = ctx.request.body
-        if(post.password) {
-            post.password = md5(md5(post.password)+ config.md5Hash)
+        if (post.password) {
+            post.password = md5(md5(post.password) + config.md5Hash)
         } else {
             delete post.password
         }
@@ -63,16 +63,16 @@ module.exports = {
     
     async login(ctx) {
         let post = ctx.request.body
-        post.password = md5(md5(post.password)+ config.md5Hash)
-        let info = await db.query('SELECT * from ' + db.prefix + 'admin where username=? and password=?',[post.username,post.password])
+        post.password = md5(md5(post.password) + config.md5Hash)
+        let info = await db.query('SELECT * from ' + db.prefix + 'admin where username=? and password=?', [post.username, post.password])
         let admin = info[0]
-        if(admin) {
+        if (admin) {
             let D = new Date()
             let time = D.toLocaleString()
-            await db.save('admin', {login_time:time}, 'id=' + parseInt(admin.id))
+            await db.save('admin', {login_time: time}, 'id=' + parseInt(admin.id))
             
             let token = md5(admin.id + admin.username + admin.password + time)
-            ctx.success({data: {id:admin.id,token:token}})
+            ctx.success({data: {id: admin.id, token: token}})
         } else {
             ctx.error({msg: '账号或密码错误'})
         }
@@ -89,11 +89,11 @@ module.exports = {
     
     async setPwd(ctx) {
         let login_id = parseInt(ctx.query.login_id)
-        let info = await db.query('SELECT id,username,role_id from ' + db.prefix + 'admin where id=' + login_id);
+        let info = await db.query('SELECT id,username,role_id,password from ' + db.prefix + 'admin where id=' + login_id)
         let post = ctx.request.body
-        if(md5(md5(post.oldPass)+ config.md5Hash) === info[0].password) {
+        if (md5(md5(post.oldPass) + config.md5Hash) === info[0].password) {
             
-            await db.save('admin', {password: md5(md5(post.newPass)+ config.md5Hash)}, 'id=' + login_id)
+            await db.save('admin', {password: md5(md5(post.newPass) + config.md5Hash)}, 'id=' + login_id)
             ctx.success({})
         } else {
             ctx.error({msg: '原密码错误'})

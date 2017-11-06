@@ -11,9 +11,9 @@
     </Form>
 </template>
 <script>
-    import { adminRoleInfo,adminRoleSave } from '../../api/index'
+    import {adminRoleInfo, adminRoleSave} from '../../api/index'
     export default {
-        props:['id'],
+        props: ['id'],
         data () {
             return {
                 form: {
@@ -21,16 +21,14 @@
                     privilege: ''
                 },
                 roleList: [],
-                rule: {
-
-                }
+                rule: {}
             }
         },
         methods: {
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        adminRoleSave(this.form, data=> {
+                        adminRoleSave(this.form, data => {
                             this.$Message.success('提交成功!')
                             this.$parent.$parent.getList()
                         })
@@ -40,9 +38,9 @@
                 })
             }
         },
-        watch:{
-            id:function (newId) {
-                adminRoleInfo({id:newId},data=> {
+        watch: {
+            id: function (newId) {
+                adminRoleInfo({id: newId}, data => {
                     if (data.info) {
                         this.form = data.info
                     } else {

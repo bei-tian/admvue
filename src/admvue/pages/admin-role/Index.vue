@@ -3,7 +3,7 @@
         <div class="list-operate">
             <Form ref="formInline" inline>
                 <FormItem>
-                    <Input placeholder="搜索角色" v-model="form.name" />
+                    <Input placeholder="搜索角色" v-model="form.name"/>
                 </FormItem>
 
 
@@ -19,7 +19,7 @@
         <MyPage :total="total" @on-change="page"></MyPage>
 
         <!--<Modal title="添加角色" :footer-hide="true" v-model="modalShow">-->
-            <!--<Edit :id="id"></Edit>-->
+        <!--<Edit :id="id"></Edit>-->
         <!--</Modal>-->
 
         <Modal title="设置权限" :footer-hide="true" v-model="modalShow">
@@ -32,7 +32,7 @@
     import Edit from './Edit.vue'
     import Privilege from './Privilege.vue'
     import {adminRoleIndex, adminRoleDel} from '../../api/index'
-    import indexMixin from '../../mixins/indexMixin';
+    import indexMixin from '../../mixins/indexMixin'
     export default {
         mixins: [indexMixin],
         data () {
@@ -53,9 +53,9 @@
                 ],
                 list: [],
                 form: {
-                    name:''
+                    name: ''
                 },
-                id:-1
+                id: -1
             }
         },
         methods: {
@@ -63,26 +63,26 @@
                 this.getList()
             },
             add() {
-                this.id = 0;
+                this.id = 0
                 this.modalShow = true
             },
             edit(params) {
-                if(params.row) {
-                    this.id = params.row.id;
+                if (params.row) {
+                    this.id = params.row.id
                 }
                 this.modalShow = true
             },
             getList() {
                 let params = this.form
                 params.page = this.currentPage
-                adminRoleIndex(params,data => {
+                adminRoleIndex(params, data => {
                     this.list = data.list
                     this.total = data.total
                     this.modalShow = false
                 })
             },
             del(id) {
-                adminRoleDel({id:id}, data => {
+                adminRoleDel({id: id}, data => {
                     this.getList()
                 })
             },
@@ -102,7 +102,7 @@
                             }
                         }
                     }, '设置权限'),
-                ];
+                ]
             },
             privilege(params) {
                 this.id = params.row.id
@@ -125,8 +125,8 @@
 
 <style>
     .admin-index {
-        margin: 20px 20px 0;
-        background-color: #ffffff;
-        padding: 20px;
+        margin: 20px 20px 0
+        background-color: #ffffff
+        padding: 20px
     }
 </style>

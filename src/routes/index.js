@@ -1,6 +1,8 @@
-import admvue from './admvue'
+import admvue from '../admvue/routes'
 
-const myRoutes = [] //自定义路由,可以分模块进行导入
-const routes = admvue.concat(myRoutes)
+//新添加的路由,可以分模块进行导入
+const routes = [
+    {path: '/demo', title: '演示页', component: require('../pages/Demo.vue')},
+]
 
-export default routes
+export default admvue.concat(routes)

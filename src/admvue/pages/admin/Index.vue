@@ -2,14 +2,14 @@
     <div class="admin-index">
         <div class="list-operate">
             <Form ref="formInline" inline>
-                <FormItem >
+                <FormItem>
                     <Select placeholder="所属角色" v-model="form.role_id" style="width:200px">
                         <Option :value="0" :key="0">选择角色</Option>
                         <Option v-for="item in roleList" :value="item.id" :key="item.id">{{item.name}}</Option>
                     </Select>
                 </FormItem>
                 <FormItem>
-                    <Input placeholder="搜索账号" v-model="form.username" />
+                    <Input placeholder="搜索账号" v-model="form.username"/>
                 </FormItem>
 
 
@@ -33,7 +33,7 @@
     import MyPage from '../../components/MyPage.vue'
     import Edit from './Edit.vue'
     import {adminIndex, adminDel} from '../../api/index'
-    import indexMixin from '../../mixins/indexMixin';
+    import indexMixin from '../../mixins/indexMixin'
     export default {
         mixins: [indexMixin],
         data () {
@@ -58,11 +58,11 @@
                 ],
                 list: [],
                 form: {
-                    role_id:0,
-                    username:''
+                    role_id: 0,
+                    username: ''
                 },
-                roleList:[],
-                id:-1
+                roleList: [],
+                id: -1
             }
         },
         methods: {
@@ -74,15 +74,15 @@
                 this.modalShow = true
             },
             edit(params) {
-                if(params.row) {
-                    this.id = params.row.id;
+                if (params.row) {
+                    this.id = params.row.id
                 }
                 this.modalShow = true
             },
             getList() {
                 let params = this.form
                 params.page = this.currentPage
-                adminIndex(params,data => {
+                adminIndex(params, data => {
                     this.list = data.list
                     this.total = data.total
                     this.roleList = data.role
@@ -90,7 +90,7 @@
                 })
             },
             del(id) {
-                adminDel({id:id}, data => {
+                adminDel({id: id}, data => {
                     this.getList()
                 })
             }
@@ -107,8 +107,8 @@
 
 <style>
     .admin-index {
-        margin: 20px 20px 0;
-        background-color: #ffffff;
-        padding: 20px;
+        margin: 20px 20px 0
+        background-color: #ffffff
+        padding: 20px
     }
 </style>

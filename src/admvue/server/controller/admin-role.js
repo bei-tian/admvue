@@ -1,4 +1,3 @@
-
 module.exports = {
     async index(ctx) {
         let page = parseInt(ctx.query.page)
@@ -10,27 +9,27 @@ module.exports = {
             'where 1 '
         if (ctx.query.name) {
             sql = sql + ' AND name like ? '
-            values.push('%'+ctx.query.name+'%')
+            values.push('%' + ctx.query.name + '%')
         }
-    
-        let total = await db.query(sql.replace('*','count(*) as num'), values);
+        
+        let total = await db.query(sql.replace('*', 'count(*) as num'), values)
         total = total[0].num
         
-        sql= sql + 'order by id asc '
-        sql= sql + 'limit '+ ((page-1)*10) +', 10'
-        let list = await db.query(sql, values);
+        sql = sql + 'order by id asc '
+        sql = sql + 'limit ' + ((page - 1) * 10) + ', 10'
+        let list = await db.query(sql, values)
         
-        ctx.success({data: {list,total}})
+        ctx.success({data: {list, total}})
     },
     async info(ctx) {
         let id = parseInt(ctx.query.id)
-        let info = await db.query('SELECT * from ' + db.prefix + 'admin_role where id=' + id);
-        ctx.success({data: {info:info[0]}})
+        let info = await db.query('SELECT * from ' + db.prefix + 'admin_role where id=' + id)
+        ctx.success({data: {info: info[0]}})
     },
     
     async save(ctx) {
         let post = ctx.request.body
-
+        
         if (post.id) {
             await db.save('admin_role', post, 'id=' + parseInt(post.id))
         } else {
@@ -54,24 +53,24 @@ module.exports = {
     
     async privilege(ctx) {
         let id = parseInt(ctx.query.id)
-        let info = await db.query('SELECT privilege from ' + db.prefix + 'admin_role where id=' + id);
+        let info = await db.query('SELECT privilege from ' + db.prefix + 'admin_role where id=' + id)
         let privilege = []
-        if(info[0]) {
-            if(info[0].privilege)
+        if (info[0]) {
+            if (info[0].privilege)
                 privilege = info[0].privilege.split(',')
         }
-        let list = await db.query('SELECT id,name as title,parent_id from '+ db.prefix +'menu order by sort asc,id asc');
-        for(let i in list) {
-            if(privilege.includes(list[i].id.toString())) {
+        let list = await db.query('SELECT id,name as title,parent_id from ' + db.prefix + 'menu order by sort asc,id asc')
+        for (let i in list) {
+            if (privilege.includes(list[i].id.toString())) {
                 list[i].checked = true
             }
         }
         
         
         let nav = getSub(list, 0)
-        for(let i in nav) {
+        for (let i in nav) {
             let menu = getSub(list, nav[i].id)
-            for(let j in menu) {
+            for (let j in menu) {
                 menu[j].expand = true
                 menu[j].children = getSub(list, menu[j].id)
             }
@@ -79,18 +78,17 @@ module.exports = {
             nav[i].children = menu
         }
         
-        ctx.success({data:nav})
+        ctx.success({data: nav})
     },
     
 }
 
 
-
 function getSub(data, parentId) {
     
     let sub = []
-    for(let i in data) {
-        if(data[i].parent_id === parentId) {
+    for (let i in data) {
+        if (data[i].parent_id === parentId) {
             sub.push(data[i])
         }
     }

@@ -1,11 +1,11 @@
-import MyPage from '../components/MyPage.vue';
+import MyPage from '../components/MyPage.vue'
 export default {
     props: ['api'],
     data () {
         return {
             modalShow: false,
-            currentPage:1,
-            total:0,
+            currentPage: 1,
+            total: 0,
             operate: [
                 {
                     title: '操作',
@@ -39,22 +39,20 @@ export default {
                                     }
                                 }
                             }, '删除')
-                        ];
-    
-                        if(this.operateAdd) {
-                            let added = this.operateAdd(h,params);
-                            buttons = buttons.concat(added);
+                        ]
+                        
+                        if (this.operateAdd) {
+                            let added = this.operateAdd(h, params)
+                            buttons = buttons.concat(added)
                         }
                         
-                        return h('div', buttons);
+                        return h('div', buttons)
                     }
                 }
             ]
         }
     },
-    computed: {
-    
-    },
+    computed: {},
     methods: {
         page(page){
             this.currentPage = page
@@ -65,7 +63,7 @@ export default {
         },
         remove(params) {
             if (!confirm('确定要删除该数据吗')) {
-                return false;
+                return false
             }
             this.del(params.row.id)
         }

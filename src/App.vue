@@ -7,8 +7,9 @@
 
 
 <script>
-    import Cookie from './admvue/utils/Cookie'
-    import {Index,Login} from './admvue/index'
+    import Cookies from 'js-cookie';
+    import Login from './admvue/pages/Login.vue'
+    import Index from './admvue/pages/Index.vue'
     export default {
         data() {
             return {
@@ -17,8 +18,8 @@
         },
         created() {
             //判断登陆
-            let login_id = Cookie.get("adm_login_id");
-            if(login_id > 0) {
+            let login_id = Cookies.get("adm_login_id");
+            if (login_id > 0) {
                 this.isLogin = true;
             }
         },

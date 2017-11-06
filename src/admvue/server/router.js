@@ -9,6 +9,7 @@ router
     .get('/admin/my', admin.my)
     .get('/admin/info', admin.info)
     .post('/admin/save', admin.save)
+    .post('/admin/set-pwd', admin.setPwd)
     .post('/admin/del', admin.del)
     
     
@@ -24,8 +25,5 @@ router
     .post('/menu/save', menu.save)
     .post('/menu/del', menu.del)
     .post('/menu/sort', menu.sort)
-    
-    
-    
 
 module.exports = router

@@ -218,7 +218,7 @@
     export default {
         methods: {
             handleChange(page) {
-                this.$emit('on-change',page)
+                this.$emit('on-change', page)
             }
         },
         mounted() {
@@ -228,7 +228,7 @@
                 if (icons[i].tagName === 'I') {
                     icons[i].addEventListener('click', (e) => {
                         let type = e.target.className.substring(18)
-                        this.$emit('on-selected',type)
+                        this.$emit('on-selected', type)
                     })
                 }
             }

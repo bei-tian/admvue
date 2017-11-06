@@ -18,27 +18,25 @@
     </Form>
 </template>
 <script>
-    import { adminInfo,adminSave } from '../../api/index'
+    import {adminInfo, adminSave} from '../../api/index'
     export default {
-        props:['id'],
+        props: ['id'],
         data () {
             return {
                 form: {
                     password: '',
                     username: '',
-                    role_id:0
+                    role_id: 0
                 },
                 roleList: [],
-                rule: {
-
-                }
+                rule: {}
             }
         },
         methods: {
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        adminSave(this.form, data=> {
+                        adminSave(this.form, data => {
                             this.$Message.success('提交成功!')
                             this.$parent.$parent.getList()
                         })
@@ -48,16 +46,16 @@
                 })
             }
         },
-        watch:{
-            id:function (newId) {
-                adminInfo({id:newId},data=> {
+        watch: {
+            id: function (newId) {
+                adminInfo({id: newId}, data => {
                     if (data.info) {
                         this.form = data.info
                     } else {
                         this.form = {
                             password: '',
                             username: '',
-                            role_id:0
+                            role_id: 0
                         }
                     }
                     this.roleList = data.roleList
