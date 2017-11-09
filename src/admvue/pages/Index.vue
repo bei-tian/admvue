@@ -101,7 +101,7 @@
                     name: '首页',
                     url: '/'
                 }],
-                tabCurrent: 0,
+                tabCurrent: '',
                 modalShow: false
             }
         },
@@ -133,7 +133,7 @@
                 this.$router.push(page.url)
 
                 localStorage.pageTab = JSON.stringify(this.pageTab)
-                localStorage.tabCurrent = this.tabCurrent
+                localStorage.tabCurrent = name
             },
 
             //切换页面标签
@@ -148,6 +148,7 @@
                     this.menuOpenName.push(openName)
                 }
                 this.menuActiveName = name
+                localStorage.tabCurrent = name
             },
 
             initTab() {

@@ -15,7 +15,7 @@ module.exports = {
             privilege = info[0].privilege.split(',')
         }
         
-        let menu = await knex(pre + 'menu').select('id', 'icon','name', 'parent_id', 'url').orderBy('sort', 'asc')
+        let menu = await knex(pre + 'menu').select('id', 'icon', 'name', 'parent_id', 'url').orderBy('sort', 'asc').orderBy('id', 'asc')
         let list = []
         for (let i in menu) {
             if (privilege.includes(menu[i].id.toString())) {
@@ -38,7 +38,7 @@ module.exports = {
     
     
     async index(ctx) {
-        let list = await knex(pre + 'menu').select('id', 'icon', 'parent_id', 'url').orderBy('sort', 'asc')
+        let list = await knex(pre + 'menu').select('id', 'icon', 'name', 'parent_id', 'url').orderBy('sort', 'asc').orderBy('id', 'asc')
         let nav = getSub(list, 0)
         
         for (let i in nav) {

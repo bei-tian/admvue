@@ -11,7 +11,6 @@ module.exports = {
     
         let list = await knex(pre + 'admin_role')
             .where(where)
-            .orderBy('a.id', 'asc')
             .limit(10).offset((page - 1) * 10)
         let total = await knex(pre + 'admin_role').where(where).count('* as num')
         total = total[0].num

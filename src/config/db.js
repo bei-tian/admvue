@@ -8,5 +8,5 @@ module.exports = {
     },
     pool: { min: 0, max: 7 },
     prefix: 'adm_',
-    //debug: true
+    debug: true
 }
