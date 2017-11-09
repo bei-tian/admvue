@@ -3,7 +3,6 @@ const app = new Koa()
 const koaBody = require('koa-body')
 app.use(koaBody())
 
-require('./lib/db')
 
 const response = require('./middlewares/response')
 app.use(response)

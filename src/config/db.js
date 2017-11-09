@@ -7,6 +7,6 @@ module.exports = {
         database : 'admvue'
     },
     pool: { min: 0, max: 7 },
-    prefix: 'adm_'
+    prefix: 'adm_',
     //debug: true
 }

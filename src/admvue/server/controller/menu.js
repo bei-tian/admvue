@@ -1,13 +1,21 @@
+const knex = require('../lib/knex');
+const pre = knex.prefix
+
 module.exports = {
     async my(ctx) {
         let login_id = parseInt(ctx.query.login_id)
-        let info = await db.query('SELECT privilege from ' + db.prefix + 'admin a ,' + db.prefix + 'admin_role b  where a.role_id = b.id and a.id=' + login_id);
+        
+        let info = await knex(pre + 'admin as a')
+            .select('privilege')
+            .join(pre + 'admin_role as b', 'role_id', 'b.id')
+            .where('a.id', login_id)
         
         let privilege = []
         if (info[0].privilege) {
             privilege = info[0].privilege.split(',')
         }
-        let menu = await db.query('SELECT id,icon,name,parent_id,url from ' + db.prefix + 'menu order by sort asc,id asc');
+        
+        let menu = await knex(pre + 'menu').select('id', 'icon','name', 'parent_id', 'url').orderBy('sort', 'asc')
         let list = []
         for (let i in menu) {
             if (privilege.includes(menu[i].id.toString())) {
@@ -30,7 +38,7 @@ module.exports = {
     
     
     async index(ctx) {
-        let list = await db.query('SELECT id,icon,name,parent_id,url from ' + db.prefix + 'menu order by sort asc,id asc')
+        let list = await knex(pre + 'menu').select('id', 'icon', 'parent_id', 'url').orderBy('sort', 'asc')
         let nav = getSub(list, 0)
         
         for (let i in nav) {
@@ -47,17 +55,18 @@ module.exports = {
     
     async save(ctx) {
         let post = ctx.request.body
+        
         if (post.id) {
-            await db.save('menu', post, 'id=' + parseInt(post.id))
+            await knex(pre + 'menu').where('id', parseInt(post.id)).update(post)
         } else {
-            await db.add('menu', post)
+            await knex(pre + 'menu').insert(post)
         }
         ctx.success({data: post})
     },
     
     async del(ctx) {
         let post = ctx.request.body
-        await db.delete('menu', 'id=' + parseInt(post.id))
+        await knex(pre + 'menu').where('id', parseInt(post.id)).del()
         ctx.success({data: post})
     },
     
@@ -66,9 +75,8 @@ module.exports = {
         let post = ctx.request.body
         let sort = post.sort
         for (let i in sort) {
-            await db.save('menu', sort[i], 'id=' + parseInt(sort[i].id))
+            await knex(pre + 'menu').where('id', parseInt(sort[i].id)).update(sort[i])
         }
-        //await db.delete('menu', 'id='+ parseInt(post.id))
         ctx.success({data: post})
     }
 }

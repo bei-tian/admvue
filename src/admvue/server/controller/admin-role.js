@@ -1,29 +1,26 @@
+const knex = require('../lib/knex');
+const pre = knex.prefix
+
 module.exports = {
     async index(ctx) {
         let page = parseInt(ctx.query.page)
-        let values = []
-        let sql = 'SELECT ' +
-            '* ' +
-            'from ' +
-            '' + db.prefix + 'admin_role ' +
-            'where 1 '
-        if (ctx.query.name) {
-            sql = sql + ' AND name like ? '
-            values.push('%' + ctx.query.name + '%')
+    
+        let where = function () {
+            if (ctx.query.name) this.where('name', 'like', '%' + ctx.query.name + '%')
         }
-        
-        let total = await db.query(sql.replace('*', 'count(*) as num'), values)
+    
+        let list = await knex(pre + 'admin_role')
+            .where(where)
+            .orderBy('a.id', 'asc')
+            .limit(10).offset((page - 1) * 10)
+        let total = await knex(pre + 'admin_role').where(where).count('* as num')
         total = total[0].num
-        
-        sql = sql + 'order by id asc '
-        sql = sql + 'limit ' + ((page - 1) * 10) + ', 10'
-        let list = await db.query(sql, values)
         
         ctx.success({data: {list, total}})
     },
     async info(ctx) {
         let id = parseInt(ctx.query.id)
-        let info = await db.query('SELECT * from ' + db.prefix + 'admin_role where id=' + id)
+        let info = await knex(pre + 'admin_role').where({id:id})
         ctx.success({data: {info: info[0]}})
     },
     
@@ -31,35 +28,35 @@ module.exports = {
         let post = ctx.request.body
         
         if (post.id) {
-            await db.save('admin_role', post, 'id=' + parseInt(post.id))
+            await knex(pre + 'admin_role').where('id',parseInt(post.id)).update(post)
         } else {
-            await db.add('admin_role', post)
+            await knex(pre + 'admin_role').insert(post)
         }
         ctx.success({data: post})
     },
     
     async del(ctx) {
         let post = ctx.request.body
-        await db.delete('admin_role', 'id=' + parseInt(post.id))
+        await knex(pre + 'admin_role').where('id',parseInt(post.id)).del()
         ctx.success({data: post})
     },
     
     async privilegeSave(ctx) {
         let post = ctx.request.body
-        await db.save('admin_role', post, 'id=' + parseInt(post.id))
+        await knex(pre + 'admin_role').where('id',parseInt(post.id)).update(post)
         ctx.success({data: post})
     },
     
     
     async privilege(ctx) {
         let id = parseInt(ctx.query.id)
-        let info = await db.query('SELECT privilege from ' + db.prefix + 'admin_role where id=' + id)
+        let info = await knex(pre + 'admin_role').select('privilege').where({id:id})
         let privilege = []
         if (info[0]) {
             if (info[0].privilege)
                 privilege = info[0].privilege.split(',')
         }
-        let list = await db.query('SELECT id,name as title,parent_id from ' + db.prefix + 'menu order by sort asc,id asc')
+        let list = await knex(pre + 'menu').select('id','name as title','parent_id').orderBy('sort','asc')
         for (let i in list) {
             if (privilege.includes(list[i].id.toString())) {
                 list[i].checked = true
