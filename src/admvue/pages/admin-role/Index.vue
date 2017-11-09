@@ -18,11 +18,11 @@
 
         <MyPage :total="total" @on-change="page"></MyPage>
 
-        <!--<Modal title="添加角色" :footer-hide="true" v-model="modalShow">-->
-        <!--<Edit :id="id"></Edit>-->
-        <!--</Modal>-->
+        <Modal title="添加角色" :footer-hide="true" v-model="modalShow">
+            <Edit :id="id"></Edit>
+        </Modal>
 
-        <Modal title="设置权限" :footer-hide="true" v-model="modalShow">
+        <Modal title="设置权限" :footer-hide="true" v-model="privilegeModelShow">
             <Privilege :id="id"></Privilege>
         </Modal>
     </div>
@@ -55,7 +55,8 @@
                 form: {
                     name: ''
                 },
-                id: -1
+                id: -1,
+                privilegeModelShow: false
             }
         },
         methods: {
@@ -106,7 +107,7 @@
             },
             privilege(params) {
                 this.id = params.row.id
-                this.modalShow = true
+                this.privilegeModelShow = true
             }
         },
         created() {
@@ -125,8 +126,8 @@
 
 <style>
     .admin-index {
-        margin: 20px 20px 0
-        background-color: #ffffff
-        padding: 20px
+        margin: 20px 20px 0;
+        background-color: #ffffff;
+        padding: 20px;
     }
 </style>

@@ -1,13 +1,12 @@
 module.exports = {
-    type: 'mysql',
-    mysql: {
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'admvue',
-        prefix: 'adm_'
+    client: 'mysql',
+    connection: {
+        host : '127.0.0.1',
+        user : 'root',
+        password : '',
+        database : 'admvue'
     },
-    sqlite: {
-        prefix: 'adm_'
-    }
+    pool: { min: 0, max: 7 },
+    prefix: 'adm_'
+    //debug: true
 }

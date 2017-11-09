@@ -48,12 +48,12 @@
         <nav class="site-menu">
             <Menu ref="menu" theme="dark" width="220px" :active-name="menuActiveName" :open-names="menuOpenName"
                   @on-select="openPage">
-                <Submenu :name="i" v-for="(item, i) in menu" :key="i">
+                <Submenu v-for="(item, i) in menu" :key="i" :name="navCurrentIndex +'-'+ i">
                     <template slot="title">
                         <Icon :type="item.icon"></Icon>
                         {{item.name}}
                     </template>
-                    <Menu-item :name="i+'-'+j" v-for="(sub,j) in item.sub" :key="j">{{sub.name}}</Menu-item>
+                    <Menu-item v-for="(sub,j) in item.sub" :key="j" :name="navCurrentIndex +'-'+ i +'-'+j">{{sub.name}}</Menu-item>
                 </Submenu>
             </Menu>
         </nav>
@@ -61,7 +61,7 @@
 
         <nav class="page-tab">
             <Tabs type="card" closable :animated="false" :value="tabCurrent" @on-click="tabChange">
-                <Tab-pane v-for="(item,index) in pageTab" :key="index" :label="item.name"></Tab-pane>
+                <Tab-pane v-for="(item,index) in pageTab" :key="index" :label="item.name" :name="item.keys"></Tab-pane>
             </Tabs>
         </nav>
 
@@ -124,42 +124,41 @@
             //点击左边菜单
             openPage(name) {
                 let keys = name.split('-')
-                let page = this.menu[keys[0]].sub[keys[1]]
-                if (this.pageTab.includes(page)) {
-                    this.tabCurrent = this.pageTab.indexOf(page)
-                } else {
+                let page = this.menu[keys[1]].sub[keys[2]]
+                page.keys = name
+                if (!this.pageTab.includes(page)) {
                     this.pageTab.push(page)
-                    this.tabCurrent = this.pageTab.lastIndexOf(page)
                 }
-                this.$router.push(page.url);
+                this.tabCurrent = name
+                this.$router.push(page.url)
+
+                localStorage.pageTab = JSON.stringify(this.pageTab)
+                localStorage.tabCurrent = this.tabCurrent
             },
 
             //切换页面标签
             tabChange(name) {
-                let page = this.pageTab[name]
-                this.$router.push(page.url);
-
+                let keys = name.split('-')
+                let page = this.nav[keys[0]].menu[keys[1]].sub[keys[2]]
+                this.$router.push(page.url)
+                this.navCurrentIndex = parseInt(keys[0])
+                this.menu = this.nav[this.navCurrentIndex].menu
+                let openName = keys[0] +'-'+ keys[1]
+                if (!this.menuOpenName.includes(openName)) {
+                    this.menuOpenName.push(openName)
+                }
+                this.menuActiveName = name
             },
 
             initTab() {
                 //刷新时，初始化nav，menu和tab
-                let path = location.pathname
-                for (let nav of this.nav) {
-                    if (nav.menu)
-                        for (let menu of nav.menu) {
-                            if (menu.sub)
-                                for (let sub of menu.sub) {
-                                    if (sub.url === path.trim()) {
-                                        this.pageTab.push(sub)
-                                        this.navCurrentIndex = this.nav.indexOf(nav)
-                                        this.menuOpenName = [nav.menu.indexOf(menu)]
-                                        this.menuActiveName = nav.menu.indexOf(menu) + '-' + menu.sub.indexOf(sub)
-                                        break
-                                    }
-                                }
-                        }
-                }
+                this.pageTab = JSON.parse(localStorage.pageTab)
+                this.tabCurrent = localStorage.tabCurrent
+                let keys = this.tabCurrent.split('-')
+                this.navCurrentIndex = parseInt(keys[0])
                 this.menu = this.nav[this.navCurrentIndex].menu
+                this.menuOpenName = [keys[0] +'-'+ keys[1]]
+                this.menuActiveName = this.tabCurrent
             }
         },
         mounted() {

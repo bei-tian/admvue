@@ -1,8 +1,17 @@
 const config = require('../../../config/config')
 const md5 = require('../utils/md5')
 
+const knex = require('../lib/knex');
+
+knex(knex.prefix + 'admin')
+    .join('adm_admin_role as A', 'role_id','A.id')
+    .then(function (row) {
+        console.log(row)
+    })
 module.exports = {
     async index(ctx) {
+
+        
         let page = parseInt(ctx.query.page)
         let role_id = parseInt(ctx.query.role_id)
         let username = ctx.query.username

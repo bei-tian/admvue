@@ -107,8 +107,8 @@
 
 <style>
     .admin-index {
-        margin: 20px 20px 0
-        background-color: #ffffff
-        padding: 20px
+        margin: 20px 20px 0;
+        background-color: #ffffff;
+        padding: 20px;
     }
 </style>
