@@ -1,5 +1,5 @@
 <template>
-    <Form ref="formCustom" :label-width="80">
+    <Form ref="formCustom" :label-width="100">
         <FormItem label="图标&名称：">
             <Input v-model="initData.name">
             <Poptip slot="prepend" placement="bottom" ref="poptip">
@@ -16,9 +16,17 @@
         <FormItem label="链接：">
             <Input v-model="initData.url"> </Input>
         </FormItem>
+
+        <FormItem label="接口权限" prop="api">
+            <Input type="text" v-model="initData.api"></Input>
+        </FormItem>
+
+        <FormItem label="是否菜单显示" prop="is_menu">
+            <Checkbox v-model="initData.is_menu"></Checkbox>
+        </FormItem>
+
         <FormItem>
             <Button type="primary" @click="handleSubmit">提交</Button>
-
         </FormItem>
     </Form>
 </template>
@@ -40,11 +48,14 @@
                     icon: this.icon,
                     name: this.editData.name,
                     url: this.editData.url,
+                    api: this.editData.api,
+                    is_menu: !!this.editData.is_menu,
                 }
             }
         },
         methods: {
             handleSubmit() {
+                this.initData.is_menu = Number(this.initData.is_menu)
                 menuSave(this.initData, data => {
                     this.$parent.$parent.getMenu()
                 })

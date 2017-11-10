@@ -53,8 +53,8 @@
                                 </div>
                                 <ol class="dd-list">
                                     <draggable v-model="menu.sub" @end="saveSort(menu.sub)">
-                                        <li class="dd-item" v-for="(sub, j) in menu.sub">
-                                            <div class="dd-content">
+                                        <li :class="{'dd-item':true}" v-for="(sub, j) in menu.sub">
+                                            <div :class="{'dd-content':true,'is-not-menu':!Boolean(sub.is_menu)}">
                                                 <span class="menu-name"><Icon :type="sub.icon"></Icon>&nbsp; {{sub.name}}</span>
                                                 <span class="item-actions">
                                             <span @click="editMenu(sub, $event)" title="编辑"><Icon type="compose"></Icon></span>
@@ -156,6 +156,8 @@
     }
 </script>
 <style>
-
+.is-not-menu {
+    background-color: #eeeeee;
+}
 
 </style>

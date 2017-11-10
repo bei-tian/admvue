@@ -7,8 +7,11 @@ app.use(koaBody())
 const response = require('./middlewares/response')
 app.use(response)
 
-const logined = require('./middlewares/check-login')
-app.use(logined)
+const checkLogin = require('./middlewares/check-login')
+app.use(checkLogin)
+
+const checkPrivilege = require('./middlewares/check-privilege')
+app.use(checkPrivilege)
 
 const router = require('./router')
 app.use(router.routes())

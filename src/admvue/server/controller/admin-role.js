@@ -65,8 +65,10 @@ module.exports = {
         
         let nav = getSub(list, 0)
         for (let i in nav) {
+            nav[i].checked = false
             let menu = getSub(list, nav[i].id)
             for (let j in menu) {
+                menu[j].checked = false
                 menu[j].expand = true
                 menu[j].children = getSub(list, menu[j].id)
             }

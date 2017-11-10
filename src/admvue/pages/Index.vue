@@ -60,7 +60,7 @@
 
 
         <nav class="page-tab">
-            <Tabs type="card" closable :animated="false" :value="tabCurrent" @on-click="tabChange">
+            <Tabs type="card" closable :animated="false" :value="tabCurrent" @on-click="tabChange" @on-tab-remove="tabRemove">
                 <Tab-pane v-for="(item,index) in pageTab" :key="index" :label="item.name" :name="item.keys"></Tab-pane>
             </Tabs>
         </nav>
@@ -149,6 +149,12 @@
                 }
                 this.menuActiveName = name
                 localStorage.tabCurrent = name
+            },
+
+            tabRemove(name) {
+                this.pageTab = JSON.parse(localStorage.pageTab)
+                this.pageTab.remove(name)
+                localStorage.pageTab = JSON.stringify(this.pageTab)
             },
 
             initTab() {
