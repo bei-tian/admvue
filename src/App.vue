@@ -1,7 +1,7 @@
 <template>
     <span>
-        <Index v-if="isLogin"></Index>
         <Login v-if="!isLogin"></Login>
+        <Index v-else></Index>
     </span>
 </template>
 

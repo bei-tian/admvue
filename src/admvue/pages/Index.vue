@@ -1,11 +1,30 @@
+<style lang='less'>
+    @import "./main.less";
+    .test {
+        width: 100px;
+        height: 100px;
+        background: #f00;
+        .test-item {
+            width: 50px;
+            height: 50px;
+            background: #ff0;
+        }
+    }
+</style>
 <template>
     <div class="main">
         <nav class="nav">
-            <div class="nav-header">
-                <img src="/images/logo.png" class="logo"/>
+            <div class="nav-header" :style="{width:menuWidth}">
+                <img v-show="!menuShrink" src="/images/logo.png" class="logo"/>
+                <img v-show="menuShrink" src="/images/logo-mini.png" width="65"/>
             </div>
-            <div class="nav-container">
+            <div class="nav-container" :style="{'margin-left':menuWidth}">
                 <ul class="nav-left">
+                    <li :style="{transform: 'rotateZ(' + (menuShrink ? '-90' : '0') + 'deg)',width: '60px'}" type="text" @click="toggleMenu">
+                        <a href="javascript:">
+                            <Icon type="navicon" size="28" style="margin-top: 15px"></Icon>
+                        </a>
+                    </li>
                     <li :class="{active:(navCurrentIndex === index)}" v-for="(item,index) in nav"
                         @click="navChange(index)">
                         <a href="javascript:">
@@ -45,27 +64,44 @@
         </nav>
 
 
-        <nav class="site-menu">
-            <Menu ref="menu" theme="dark" width="220px" :active-name="menuActiveName" :open-names="menuOpenName"
-                  @on-select="openPage">
-                <Submenu v-for="(item, i) in menu" :key="i" :name="navCurrentIndex +'-'+ i">
-                    <template slot="title">
-                        <Icon :type="item.icon"></Icon>
-                        {{item.name}}
-                    </template>
-                    <Menu-item v-for="(sub,j) in item.sub" :key="j" :name="navCurrentIndex +'-'+ i +'-'+j">{{sub.name}}</Menu-item>
-                </Submenu>
-            </Menu>
+        <nav class="site-menu" :style="{width:menuWidth}">
+            <template v-if="!menuShrink">
+                <Menu ref="menu" theme="dark" width="220px" :active-name="menuActiveName" :open-names="menuOpenName"
+                      @on-select="openPage">
+                    <Submenu v-for="(item, i) in menu" :key="i" :name="navCurrentIndex +'-'+ i">
+                        <template slot="title">
+                            <Icon :type="item.icon"></Icon>
+                            {{item.name}}
+                        </template>
+                        <Menu-item v-for="(sub,j) in item.sub" :key="j" :name="navCurrentIndex +'-'+ i +'-'+j">
+                            {{sub.name}}
+                        </Menu-item>
+                    </Submenu>
+                </Menu>
+            </template>
+            <template v-else>
+                <template v-for="(item, i) in menu">
+                    <Dropdown placement="right-start" @on-click="openPage">
+                        <Button style="width: 70px;margin-left: -5px;padding:10px 0; color: #ffffff;" type="text">
+                            <Icon :type="item.icon" size="20"></Icon>
+                        </Button>
+                        <DropdownMenu slot="list">
+                            <DropdownItem v-for="(sub,j) in item.sub" :key="j" :name="navCurrentIndex +'-'+ i +'-'+j">{{sub.name}}</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                </template>
+            </template>
         </nav>
 
 
-        <nav class="page-tab">
-            <Tabs type="card" closable :animated="false" :value="tabCurrent" @on-click="tabChange" @on-tab-remove="tabRemove">
+        <nav class="page-tab" :style="{'margin-left':menuWidth}">
+            <Tabs type="card" closable :animated="false" :value="tabCurrent" @on-click="tabChange"
+                  @on-tab-remove="tabRemove">
                 <Tab-pane v-for="(item,index) in pageTab" :key="index" :label="item.name" :name="item.keys"></Tab-pane>
             </Tabs>
         </nav>
 
-        <main class="adm-page">
+        <main class="adm-page" :style="{'margin-left':menuWidth}">
             <keep-alive>
                 <router-view></router-view>
             </keep-alive>
@@ -77,10 +113,6 @@
     </div>
 </template>
 
-<style>
-
-
-</style>
 
 <script>
     import SetPassword from './home/SetPassword.vue'
@@ -93,15 +125,22 @@
                 nav: [],
                 navCurrentIndex: 0,
 
+                //左侧菜单状态
                 menu: [],
                 menuOpenName: [],
                 menuActiveName: '',
 
+                //标签页切换
                 pageTab: [{
                     name: '首页',
                     url: '/'
                 }],
                 tabCurrent: '',
+
+                //菜单收缩
+                menuShrink: false,
+                menuWidth: '220px',
+
                 modalShow: false
             }
         },
@@ -115,6 +154,17 @@
                 Cookies.remove('adm_login_id')
                 this.$root.$children[0].isLogin = false
             },
+
+            //收缩菜单
+            toggleMenu() {
+                this.menuShrink = !this.menuShrink
+                if (this.menuShrink) {
+                    this.menuWidth = '65px'
+                } else  {
+                    this.menuWidth = '220px'
+                }
+            },
+
             //切换主导航栏
             navChange(index) {
                 this.navCurrentIndex = index
@@ -143,7 +193,7 @@
                 this.$router.push(page.url)
                 this.navCurrentIndex = parseInt(keys[0])
                 this.menu = this.nav[this.navCurrentIndex].menu
-                let openName = keys[0] +'-'+ keys[1]
+                let openName = keys[0] + '-' + keys[1]
                 if (!this.menuOpenName.includes(openName)) {
                     this.menuOpenName.push(openName)
                 }
@@ -164,7 +214,7 @@
                 let keys = this.tabCurrent.split('-')
                 this.navCurrentIndex = parseInt(keys[0])
                 this.menu = this.nav[this.navCurrentIndex].menu
-                this.menuOpenName = [keys[0] +'-'+ keys[1]]
+                this.menuOpenName = [keys[0] + '-' + keys[1]]
                 this.menuActiveName = this.tabCurrent
             }
         },
