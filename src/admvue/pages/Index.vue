@@ -15,8 +15,8 @@
     <div class="main">
         <nav class="nav">
             <div class="nav-header" :style="{width:menuWidth}">
-                <img v-show="!menuShrink" src="/images/logo.png" class="logo"/>
-                <img v-show="menuShrink" src="/images/logo-mini.png" width="65"/>
+                <img v-show="!menuShrink" src="/dist/static/images/logo.png" class="logo"/>
+                <img v-show="menuShrink" src="/dist/static/images/logo-mini.png" width="65"/>
             </div>
             <div class="nav-container" :style="{'margin-left':menuWidth}">
                 <ul class="nav-left">
@@ -45,7 +45,7 @@
                     <li class="user-info">
                         <Dropdown trigger="click">
                             <a href="javascript:void(0)">
-                                <img src="/images/user2-160x160.jpg" class="user-image"/> <span>admin</span>
+                                <img src="/dist/static/images/user2-160x160.jpg" class="user-image"/> <span>admin</span>
                                 <Icon type="arrow-down-b"></Icon>
                             </a>
                             <DropdownMenu slot="list" class="user-set">
@@ -118,7 +118,8 @@
     import SetPassword from './home/SetPassword.vue'
     import {menuMy} from '../api/index'
     import Cookies from 'js-cookie'
-
+    let themeLink = document.querySelector('link[name="theme"]');
+    themeLink.setAttribute('href', '');
     export default {
         data() {
             return {

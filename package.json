@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --hot --history-api-fallback --content-base www/",
-    "server": "node src/admvue/server/app.js",
+    "dev": "webpack-dev-server --hot --history-api-fallback --content-base ./",
+    "server": "node server/app.js",
     "start": "concurrently \"npm run dev\" \"npm run server\"",
     "build": "webpack"
   },

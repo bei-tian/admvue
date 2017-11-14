@@ -101,7 +101,6 @@
                 this.navCurrent = this.nav[index]
             },
             addMenu(parent_id) {
-                this.$modal('添加新菜单', Edit, {editData})
                 this.editData = {
                     parent_id: parent_id,
                     icon: 'navicon-round',
@@ -116,7 +115,6 @@
             },
 
             delMenu(id, e) {
-                console.log(e)
                 if (!confirm('确定要删除该菜单吗？')) {
                     return false
                 }

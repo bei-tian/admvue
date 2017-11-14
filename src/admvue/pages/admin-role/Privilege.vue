@@ -28,8 +28,8 @@
                     privilege.push(item.id)
                 })
                 adminRolePrivilegeSave({id: this.id, privilege: privilege.join(',')}, data => {
+                    this.$parent.$parent.privilegeModelShow = false
                     this.$Message.success('保存成功!')
-                    this.$parent.$parent.getList()
                 })
             },
             getPrivilege(id) {

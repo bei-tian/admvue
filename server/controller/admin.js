@@ -1,4 +1,4 @@
-const config = require('../../../config/config')
+const config = require('../config')
 const md5 = require('../utils/md5')
 
 const knex = require('../lib/knex');

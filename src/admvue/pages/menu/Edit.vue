@@ -17,11 +17,11 @@
             <Input v-model="initData.url"> </Input>
         </FormItem>
 
-        <FormItem label="接口权限" prop="api">
+        <FormItem label="接口权限：" prop="api">
             <Input type="text" v-model="initData.api"></Input>
         </FormItem>
 
-        <FormItem label="是否菜单显示" prop="is_menu">
+        <FormItem label="是否菜单显示：" prop="is_menu">
             <Checkbox v-model="initData.is_menu"></Checkbox>
         </FormItem>
 
