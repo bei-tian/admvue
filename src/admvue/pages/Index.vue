@@ -95,8 +95,7 @@
 
 
         <nav class="page-tab" :style="{'margin-left':menuWidth}">
-            <Tabs type="card" closable :animated="false" :value="tabCurrent" @on-click="tabChange"
-                  @on-tab-remove="tabRemove">
+            <Tabs type="card" closable :animated="false" :value="tabCurrent" @on-click="tabChange" @on-tab-remove="closePage">
                 <Tab-pane v-for="(item,index) in pageTab" :key="index" :label="item.name" :name="item.keys"></Tab-pane>
             </Tabs>
         </nav>
@@ -118,8 +117,7 @@
     import SetPassword from './home/SetPassword.vue'
     import {menuMy} from '../api/index'
     import Cookies from 'js-cookie'
-    let themeLink = document.querySelector('link[name="theme"]');
-    themeLink.setAttribute('href', '');
+
     export default {
         data() {
             return {
@@ -177,7 +175,7 @@
                 let keys = name.split('-')
                 let page = this.menu[keys[1]].sub[keys[2]]
                 page.keys = name
-                if (!this.pageTab.includes(page)) {
+                if(!this.contains(page)) {
                     this.pageTab.push(page)
                 }
                 this.tabCurrent = name
@@ -186,7 +184,20 @@
                 localStorage.pageTab = JSON.stringify(this.pageTab)
                 localStorage.tabCurrent = name
             },
-
+            closePage(name) {
+                let keys = name.split('-')
+                let page = this.menu[keys[1]].sub[keys[2]]
+                for (let i in this.pageTab) {
+                    if (this.pageTab[i].id === page.id) {
+                        this.pageTab.splice(i, 1);
+                        //关闭当前面
+                        if(name === this.tabCurrent) {
+                            this.$router.push(this.pageTab[i-1].url)
+                        }
+                    }
+                }
+                localStorage.pageTab = JSON.stringify(this.pageTab)
+            },
             //切换页面标签
             tabChange(name) {
                 let keys = name.split('-')
@@ -202,12 +213,6 @@
                 localStorage.tabCurrent = name
             },
 
-            tabRemove(name) {
-                this.pageTab = JSON.parse(localStorage.pageTab)
-                this.pageTab.remove(name)
-                localStorage.pageTab = JSON.stringify(this.pageTab)
-            },
-
             initTab() {
                 //刷新时，初始化nav，menu和tab
                 this.pageTab = JSON.parse(localStorage.pageTab)
@@ -217,6 +222,13 @@
                 this.menu = this.nav[this.navCurrentIndex].menu
                 this.menuOpenName = [keys[0] + '-' + keys[1]]
                 this.menuActiveName = this.tabCurrent
+            },
+
+            contains(current) {
+                for (let i in this.pageTab) {
+                    if (this.pageTab[i].id === current.id) return true;
+                }
+                return false;
             }
         },
         mounted() {
